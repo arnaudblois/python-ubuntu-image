@@ -1,0 +1,30 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches-ignore: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  OPENSSL_VERSION: 3.0.0
+  QUICK_BUILD: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        ubuntu_version: [20.04, 21.04]
+        python_version: [3.9.7, 3.10.0rc2]
+    env:
+      UBUNTU_VERSION: ${{ matrix.ubuntu_version }}
+      PYTHON_VERSION: ${{ matrix.python_version }}
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build the Docker image
+        run: bash src/build_image.sh
+      - name: Test the image
+        run: bash src/test_image.sh

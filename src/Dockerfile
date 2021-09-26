@@ -1,0 +1,83 @@
+ARG UBUNTU_VERSION
+
+FROM ubuntu:${UBUNTU_VERSION} as building_image
+RUN apt-get update && apt-get dist-upgrade -y
+RUN apt-get install -y \
+  build-essential \
+  libbz2-dev \
+  libffi-dev \
+  libgdbm-dev \
+  liblzma-dev \
+  libncurses5-dev \
+  libnss3-dev \
+  libsqlite3-dev \
+  wget \
+  zlib1g-dev
+
+ARG SSL_VERSION="3.0.0"
+ARG QUICK_BUILD="false"
+RUN echo "Building OpenSSL ${SSL_VERSION}"
+RUN wget -q https://www.openssl.org/source/openssl-${SSL_VERSION}.tar.gz -O - | tar -xz
+WORKDIR openssl-${SSL_VERSION}
+# Make sure to use RPATH as specified at
+# https://wiki.openssl.org/index.php/Compilation_and_Installation#Using_RPATHs
+RUN ./config -Wl,-rpath=/usr/local/ssl/lib64:/usr/local/lib -Wl,--enable-new-dtags --prefix=/usr/local/ssl --openssldir=/usr/local/ssl
+RUN make --quiet
+RUN if [ "${QUICK_BUILD}" = true ] ; then make test; fi
+RUN make install
+
+# Make sure the env variable are correctly set for Python to be able
+# to link and compile against openSSL.
+ENV LDFLAGS "-L/usr/local/ssl/lib64/ -Wl,-rpath=/usr/local/ssl/lib64:/usr/local/lib"
+ENV LD_LIBRARY_PATH "/usr/local/ssl/lib/:/usr/local/ssl/lib64/"
+ENV CPPFLAGS "-I/usr/local/ssl/include -I/usr/local/ssl/include/openssl"
+
+ARG PY_VERSION
+RUN echo "Building Python version ${PY_VERSION}"
+RUN wget -q https://www.python.org/ftp/python/${PY_VERSION%[abr]*}/Python-${PY_VERSION}.tgz -O - | tar -xz
+WORKDIR Python-${PY_VERSION}
+
+RUN if [ "${QUICK_BUILD}" = true ] ; then OPTIMIZATION="" ; else OPTIMIZATION="--enable-optimizations --with-lto"; fi && \
+  ./configure \
+  --with-openssl=/usr/local/ssl \
+  --enable-loadable-sqlite-extensions \
+  --enable-shared \
+	--with-system-ffi \
+  --with-openssl-rpath=auto \
+  --disable-test-modules \
+  ${OPTIMIZATION}
+RUN make --quiet
+RUN make altinstall
+# We make sure to remove all the fluff
+# recipe taken from the official image https://github.com/docker-library/python/
+RUN find /usr/local -depth \
+		\( \
+			\( -type d -a \( -name test -o -name tests -o -name idle_test \) \) \
+			-o \
+			\( -type f -a \( -name '*.pyc' -o -name '*.pyo' \) \) \
+		\) -exec rm -rf '{}' +;
+
+FROM ubuntu:${UBUNTU_VERSION}
+RUN apt-get update \
+  && apt-get dist-upgrade -y \
+  && apt-get install -y --no-install-recommends \
+    bzip2 \
+    libffi7 \
+    libgdbm6 \
+    liblzma5 \
+    libncurses6 \
+    libnss3 \
+    sqlite3 \
+    zlib1g \
+  && rm -rf /var/lib/apt/lists/*
+COPY --from=building_image /usr/local/ /usr/local/
+ARG PY_VERSION
+ARG CREATION_COMMIT_SHA
+ENV LD_LIBRARY_PATH "/usr/local/ssl/lib/:/usr/local/ssl/lib64/"
+ENV CREATION_COMMIT_SHA ${CREATION_COMMIT_SHA}
+RUN echo "Python ${PY_VERSION} has been successfully installed and is accessible at /usr/local/bin/python3."
+
+WORKDIR /usr/local/bin/
+RUN ln -s python${PY_VERSION%.*} python \
+  && ln -s python${PY_VERSION%.*} python3
+CMD ["/usr/local/bin/python3"]
