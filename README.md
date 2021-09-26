@@ -6,12 +6,12 @@ A Ubuntu Docker image with the latest Python version built with optimisations an
 
 The images can be accessed using `docker pull <image name>`.
 
-| Ubuntu | Python    | Image name                        |
-| ------ | --------- | --------------------------------- |
-| 20.04  | 3.9.7     | pydoctor/focal-python:3.9.7       |
-| 20.04  | 3.10.0rc2 | pydoctor/focal-python:3.10.0rc2   |
-| 21.04  | 3.9.7     | pydoctor/hirsute-python:3.9.7     |
-| 21.04  | 3.10.0rc2 | pydoctor/hirsute-python:3.10.0rc2 |
+| Ubuntu | Python    | Image name                            |
+| ------ | --------- | ------------------------------------- |
+| 20.04  | 3.9.7     | ursamajorlab/focal-python:3.9.7       |
+| 20.04  | 3.10.0rc2 | ursamajorlab/focal-python:3.10.0rc2   |
+| 21.04  | 3.9.7     | ursamajorlab/hirsute-python:3.9.7     |
+| 21.04  | 3.10.0rc2 | ursamajorlab/hirsute-python:3.10.0rc2 |
 
 # Rationale
 
