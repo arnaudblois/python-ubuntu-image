@@ -15,8 +15,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        ubuntu_version: [20.04, 21.04]
-        python_version: [3.9.7, 3.10.0, 3.11.0a1]
+        ubuntu_version: ["20.04", "21.10"]
+        python_version: ["3.9.8", "3.10.0", "3.11.0a2"]
     env:
       UBUNTU_VERSION: ${{ matrix.ubuntu_version }}
       PYTHON_VERSION: ${{ matrix.python_version }}
