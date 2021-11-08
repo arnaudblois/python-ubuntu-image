@@ -1,6 +1,7 @@
 # python-ubuntu-image
 
-A Ubuntu Docker image with the latest Python version built with optimisations and the latest openSSL
+A Ubuntu Docker image with the latest Python version built with optimisations
+and the latest openSSL.
 
 # Images
 
@@ -8,12 +9,12 @@ The images can be accessed using `docker pull <image name>`.
 
 | Ubuntu | Python   | Image name                       |
 | ------ | -------- | -------------------------------- |
-| 20.04  | 3.9.7    | pydoctor/focal-python:3.9.7      |
+| 20.04  | 3.9.8    | pydoctor/focal-python:3.9.8      |
 | 20.04  | 3.10.0   | pydoctor/focal-python:3.10.0     |
-| 20.04  | 3.11.0a1 | pydoctor/focal-python:3.11.0a1   |
-| 21.04  | 3.9.7    | pydoctor/hirsute-python:3.9.7    |
+| 20.04  | 3.11.0a2 | pydoctor/focal-python:3.11.0a2   |
+| 21.04  | 3.9.8    | pydoctor/hirsute-python:3.9.8    |
 | 21.04  | 3.10.0   | pydoctor/hirsute-python:3.10.0   |
-| 21.04  | 3.11.0a1 | pydoctor/hirsute-python:3.11.0a1 |
+| 21.04  | 3.11.0a2 | pydoctor/hirsute-python:3.11.0a2 |
 
 # Rationale
 
