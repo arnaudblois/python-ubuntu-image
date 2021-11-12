@@ -16,7 +16,8 @@ The images can be accessed using `docker pull <image name>`.
 | 21.04  | 3.10.0   | ursamajorlab/hirsute-python:3.10 |
 | 21.04  | 3.11.0a2 | ursamajorlab/hirsute-python:3.11 |
 
-The images are also accessible at ursamajorlab/<adjective>-python:<full-python-version>,
+The images are also accessible by using the major.minor.revision tag
+`ursamajorlab/<adjective>-python:<full-python-version>`,
 e.g. ursamajorlab/focal-python:3.9.8
 
 # Rationale

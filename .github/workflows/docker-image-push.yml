@@ -36,5 +36,6 @@ jobs:
           docker push ${DOCKERHUB_USERNAME}/${UBUNTU_ADJECTIVE}-python:${PYTHON_VERSION}
       - name: Retag to major.minor only (e.g. impish-python:3.10)
         run: |
+          UBUNTU_ADJECTIVE=$(bash src/ubuntu_adjective.sh --ubuntu=${UBUNTU_VERSION})
           docker tag ${DOCKERHUB_USERNAME}/${UBUNTU_ADJECTIVE}-python:${PYTHON_VERSION} ${DOCKERHUB_USERNAME}/${UBUNTU_ADJECTIVE}-python:${PYTHON_VERSION%.*}
           docker push ${DOCKERHUB_USERNAME}/${UBUNTU_ADJECTIVE}-python:${PYTHON_VERSION%.*}
