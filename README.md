@@ -9,12 +9,15 @@ The images can be accessed using `docker pull <image name>`.
 
 | Ubuntu | Python   | Image name                       |
 | ------ | -------- | -------------------------------- |
-| 20.04  | 3.9.8    | pydoctor/focal-python:3.9.8      |
-| 20.04  | 3.10.0   | pydoctor/focal-python:3.10.0     |
-| 20.04  | 3.11.0a2 | pydoctor/focal-python:3.11.0a2   |
-| 21.04  | 3.9.8    | pydoctor/hirsute-python:3.9.8    |
-| 21.04  | 3.10.0   | pydoctor/hirsute-python:3.10.0   |
-| 21.04  | 3.11.0a2 | pydoctor/hirsute-python:3.11.0a2 |
+| 20.04  | 3.9.8    | ursamajorlab/focal-python:3.9    |
+| 20.04  | 3.10.0   | ursamajorlab/focal-python:3.10   |
+| 20.04  | 3.11.0a2 | ursamajorlab/focal-python:3.11   |
+| 21.04  | 3.9.8    | ursamajorlab/hirsute-python:3.9  |
+| 21.04  | 3.10.0   | ursamajorlab/hirsute-python:3.10 |
+| 21.04  | 3.11.0a2 | ursamajorlab/hirsute-python:3.11 |
+
+The images are also accessible at ursamajorlab/<adjective>-python:<full-python-version>,
+e.g. ursamajorlab/focal-python:3.9.8
 
 # Rationale
 

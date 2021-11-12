@@ -56,18 +56,22 @@ RUN find /usr/local -depth \
 			-o \
 			\( -type f -a \( -name '*.pyc' -o -name '*.pyo' \) \) \
 		\) -exec rm -rf '{}' +;
+# We also remove the headers and doc for openSSL as they are no longer needed.
+RUN rm -rf /usr/local/ssl/share /usr/local/ssl/include
 
 FROM ubuntu:${UBUNTU_VERSION}
 RUN apt-get update \
   && apt-get dist-upgrade -y \
   && apt-get install -y --no-install-recommends \
     bzip2 \
+    curl \
     libffi7 \
     libgdbm6 \
     liblzma5 \
     libncurses6 \
     libnss3 \
     sqlite3 \
+    wget \
     zlib1g \
   && rm -rf /var/lib/apt/lists/*
 COPY --from=building_image /usr/local/ /usr/local/
