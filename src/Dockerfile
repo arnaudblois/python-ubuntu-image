@@ -64,6 +64,7 @@ RUN apt-get update \
   && apt-get dist-upgrade -y \
   && apt-get install -y --no-install-recommends \
     bzip2 \
+    ca-certificates \
     curl \
     libffi7 \
     libgdbm6 \
