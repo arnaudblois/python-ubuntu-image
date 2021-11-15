@@ -81,6 +81,12 @@ ARG CREATION_COMMIT_SHA
 ENV LD_LIBRARY_PATH "/usr/local/ssl/lib/:/usr/local/ssl/lib64/"
 ENV CREATION_COMMIT_SHA ${CREATION_COMMIT_SHA}
 RUN echo "Python ${PY_VERSION} has been successfully installed and is accessible at /usr/local/bin/python3."
+# OpenSSL looks into $OPENSSLDIR/certs as CA trust store. By default this is
+# empty, and installing ca-certificates with apt-get populates it in the system
+# openssl at /usr/lib/ssl/certs/. Our compiled openssl looks into
+# /usr/local/ssl/certs, we create a symlink between the two to let Python access
+# the OS trust store.
+RUN rm -rf /usr/local/ssl/certs && ln -s /usr/lib/ssl/certs/ /usr/local/ssl/certs
 
 WORKDIR /usr/local/bin/
 RUN ln -s python${PY_VERSION%.*} python \
