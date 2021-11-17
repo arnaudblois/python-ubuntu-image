@@ -74,6 +74,9 @@ RUN apt-get update \
     sqlite3 \
     wget \
     zlib1g \
+  && apt-get autoclean \
+  && apt-get clean \
+  && apt-get autoremove -y \
   && rm -rf /var/lib/apt/lists/*
 COPY --from=building_image /usr/local/ /usr/local/
 ARG PY_VERSION
