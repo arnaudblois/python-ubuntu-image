@@ -14,7 +14,7 @@ RUN apt-get install -y \
   wget \
   zlib1g-dev
 
-ARG SSL_VERSION="3.0.0"
+ARG SSL_VERSION="3.0.2"
 ARG QUICK_BUILD="false"
 RUN echo "Building OpenSSL ${SSL_VERSION}"
 RUN wget -q https://www.openssl.org/source/openssl-${SSL_VERSION}.tar.gz -O - | tar -xz
