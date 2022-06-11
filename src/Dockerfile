@@ -14,11 +14,11 @@ RUN apt-get install -y \
   wget \
   zlib1g-dev
 
-ARG SSL_VERSION="3.0.2"
+ARG OPENSSL_VERSION="3.0.3"
 ARG QUICK_BUILD="false"
-RUN echo "Building OpenSSL ${SSL_VERSION}"
-RUN wget -q https://www.openssl.org/source/openssl-${SSL_VERSION}.tar.gz -O - | tar -xz
-WORKDIR openssl-${SSL_VERSION}
+RUN echo "Building OpenSSL ${OPENSSL_VERSION}"
+RUN wget -q https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz -O - | tar -xz
+WORKDIR openssl-${OPENSSL_VERSION}
 # Make sure to use RPATH as specified at
 # https://wiki.openssl.org/index.php/Compilation_and_Installation#Using_RPATHs
 RUN ./config -Wl,-rpath=/usr/local/ssl/lib64:/usr/local/lib -Wl,--enable-new-dtags --prefix=/usr/local/ssl --openssldir=/usr/local/ssl
