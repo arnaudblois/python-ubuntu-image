@@ -36,6 +36,8 @@ case $UBUNTU_VERSION in
     UBUNTU_ADJECTIVE="impish";;
   22.04)
     UBUNTU_ADJECTIVE="jammy";;
+  22.04)
+    UBUNTU_ADJECTIVE="kinetic";;
   \?)
     echo "Error: Invalid option for ubuntu version"
     exit;;
