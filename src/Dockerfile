@@ -4,6 +4,7 @@ FROM ubuntu:${UBUNTU_VERSION} as building_image
 RUN apt-get update && apt-get dist-upgrade -y
 RUN apt-get install -y \
   build-essential \
+  ca-certificates \
   libbz2-dev \
   libffi-dev \
   libgdbm-dev \
