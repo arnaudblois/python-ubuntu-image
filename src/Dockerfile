@@ -4,7 +4,6 @@ FROM ubuntu:${UBUNTU_VERSION} as building_image
 RUN apt-get update && apt-get dist-upgrade -y
 RUN apt-get install -y \
   build-essential \
-  ca-certificates \
   libbz2-dev \
   libffi-dev \
   libgdbm-dev \
@@ -24,7 +23,10 @@ WORKDIR openssl-${OPENSSL_VERSION}
 # https://wiki.openssl.org/index.php/Compilation_and_Installation#Using_RPATHs
 RUN ./config -Wl,-rpath=/usr/local/ssl/lib64:/usr/local/lib -Wl,--enable-new-dtags --prefix=/usr/local/ssl --openssldir=/usr/local/ssl
 RUN make --quiet
-RUN if [ "${QUICK_BUILD}" = true ] ; then make test; fi
+# Disabling the following test for openssl 3.0.3 as these tests were flaky
+# and started failing after the 01/06/2022. See issue
+# https://github.com/openssl/openssl/issues/18456
+# RUN if [ ! "${QUICK_BUILD}" = true ] ; then make test; fi
 RUN make install
 
 # Make sure the env variable are correctly set for Python to be able
