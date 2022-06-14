@@ -37,7 +37,7 @@ ENV CPPFLAGS "-I/usr/local/ssl/include -I/usr/local/ssl/include/openssl"
 
 ARG PY_VERSION
 RUN echo "Building Python version ${PY_VERSION}"
-RUN wget -q https://www.python.org/ftp/python/${PY_VERSION%[abr]*}/Python-${PY_VERSION}.tgz -O - | tar -xz
+RUN wget -q https://www.python.org/ftp/python/${PY_VERSION}/Python-${PY_VERSION}.tgz -O - | tar -xz
 WORKDIR Python-${PY_VERSION}
 
 RUN if [ "${QUICK_BUILD}" = true ] ; then OPTIMIZATION="" ; else OPTIMIZATION="--enable-optimizations --with-lto"; fi && \
