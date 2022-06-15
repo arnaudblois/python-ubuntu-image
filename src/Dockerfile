@@ -27,7 +27,7 @@ RUN make --quiet
 # and started failing after the 01/06/2022. See issue
 # https://github.com/openssl/openssl/issues/18456
 # RUN if [ ! "${QUICK_BUILD}" = true ] ; then make test; fi
-RUN make install
+RUN make --quiet install
 
 # Make sure the env variable are correctly set for Python to be able
 # to link and compile against openSSL.
@@ -50,7 +50,7 @@ RUN if [ "${QUICK_BUILD}" = true ] ; then OPTIMIZATION="" ; else OPTIMIZATION="-
   --disable-test-modules \
   ${OPTIMIZATION}
 RUN make --quiet
-RUN make altinstall
+RUN make --quiet altinstall
 # We make sure to remove all the fluff
 # recipe taken from the official image https://github.com/docker-library/python/
 RUN find /usr/local -depth \
