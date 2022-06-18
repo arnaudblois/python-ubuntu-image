@@ -36,7 +36,7 @@ ENV LD_LIBRARY_PATH "/usr/local/ssl/lib/:/usr/local/ssl/lib64/"
 ENV CPPFLAGS "-I/usr/local/ssl/include -I/usr/local/ssl/include/openssl"
 
 ARG PY_VERSION
-RUN echo "Building Python version ${PY_VERSION}"
+RUN echo "Building Python version ${PY_VERSION} from source at https://www.python.org/ftp/python/${PY_VERSION}/Python-${PY_VERSION}.tgz"
 RUN wget -q https://www.python.org/ftp/python/${PY_VERSION}/Python-${PY_VERSION}.tgz -O - | tar -xz
 WORKDIR Python-${PY_VERSION}
 
