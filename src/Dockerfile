@@ -16,9 +16,11 @@ RUN apt-get install -y \
 
 ARG OPENSSL_VERSION="3.0.3"
 ARG QUICK_BUILD="false"
+ARG PY_VERSION
+
 RUN echo "Building OpenSSL ${OPENSSL_VERSION}"
-RUN wget -q https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz -O - | tar -xz
-WORKDIR openssl-${OPENSSL_VERSION}
+RUN wget -cq https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz -O - | tar -xz
+WORKDIR /openssl-${OPENSSL_VERSION}
 # Make sure to use RPATH as specified at
 # https://wiki.openssl.org/index.php/Compilation_and_Installation#Using_RPATHs
 RUN ./config -Wl,-rpath=/usr/local/ssl/lib64:/usr/local/lib -Wl,--enable-new-dtags --prefix=/usr/local/ssl --openssldir=/usr/local/ssl
@@ -29,16 +31,15 @@ RUN make --quiet
 # RUN if [ ! "${QUICK_BUILD}" = true ] ; then make test; fi
 RUN make --quiet install
 
+WORKDIR /
+RUN echo "Building Python version ${PY_VERSION} from source at https://www.python.org/ftp/python/${PY_VERSION}/Python-${PY_VERSION}.tgz" && \
+  wget -cq https://www.python.org/ftp/python/${PY_VERSION}/Python-${PY_VERSION}.tgz -O - | tar -xz
+WORKDIR /Python-${PY_VERSION}
 # Make sure the env variable are correctly set for Python to be able
 # to link and compile against openSSL.
 ENV LDFLAGS "-L/usr/local/ssl/lib64/ -Wl,-rpath=/usr/local/ssl/lib64:/usr/local/lib"
 ENV LD_LIBRARY_PATH "/usr/local/ssl/lib/:/usr/local/ssl/lib64/"
 ENV CPPFLAGS "-I/usr/local/ssl/include -I/usr/local/ssl/include/openssl"
-
-ARG PY_VERSION
-RUN echo "Building Python version ${PY_VERSION} from source at https://www.python.org/ftp/python/${PY_VERSION}/Python-${PY_VERSION}.tgz"
-RUN wget -q https://www.python.org/ftp/python/${PY_VERSION}/Python-${PY_VERSION}.tgz -O - | tar -xz
-WORKDIR Python-${PY_VERSION}
 
 RUN if [ "${QUICK_BUILD}" = true ] ; then OPTIMIZATION="" ; else OPTIMIZATION="--enable-optimizations --with-lto"; fi && \
   ./configure \
