@@ -14,28 +14,36 @@ RUN apt-get install -y \
   wget \
   zlib1g-dev
 
-ARG SSL_VERSION="3.0.2"
+ARG OPENSSL_VERSION="3.0.3"
 ARG QUICK_BUILD="false"
-RUN echo "Building OpenSSL ${SSL_VERSION}"
-RUN wget -q https://www.openssl.org/source/openssl-${SSL_VERSION}.tar.gz -O - | tar -xz
-WORKDIR openssl-${SSL_VERSION}
+ARG PY_VERSION
+
+RUN echo "Downloading sources"
+
+# BASE_PYTHON_VERSION: we strip the alpha, beta, rc, etc. For instance 3.11.0a3 -> 3.11.0 
+RUN export BASE_PYTHON_VERSION=`echo ${PY_VERSION} | sed -r "s/([0-9]+\.[0-9]+\.[0-9]+)([a-zA-Z][0-9]+)?/\1/"` && \
+  wget -cq https://www.python.org/ftp/python/${BASE_PYTHON_VERSION}/Python-${PY_VERSION}.tgz -O - | tar -xz && \
+  wget -cq https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz -O - | tar -xz
+
+RUN echo "Building OpenSSL ${OPENSSL_VERSION}"
+WORKDIR /openssl-${OPENSSL_VERSION}
 # Make sure to use RPATH as specified at
 # https://wiki.openssl.org/index.php/Compilation_and_Installation#Using_RPATHs
 RUN ./config -Wl,-rpath=/usr/local/ssl/lib64:/usr/local/lib -Wl,--enable-new-dtags --prefix=/usr/local/ssl --openssldir=/usr/local/ssl
 RUN make --quiet
-RUN if [ "${QUICK_BUILD}" = true ] ; then make test; fi
-RUN make install
+# Disabling the following test for openssl 3.0.3 as these tests were flaky
+# and started failing after the 01/06/2022. See issue
+# https://github.com/openssl/openssl/issues/18456
+# RUN if [ ! "${QUICK_BUILD}" = true ] ; then make test; fi
+RUN make --quiet install
 
+RUN echo "Building Python ${PY_VERSION}"
+WORKDIR /Python-${PY_VERSION}
 # Make sure the env variable are correctly set for Python to be able
 # to link and compile against openSSL.
 ENV LDFLAGS "-L/usr/local/ssl/lib64/ -Wl,-rpath=/usr/local/ssl/lib64:/usr/local/lib"
 ENV LD_LIBRARY_PATH "/usr/local/ssl/lib/:/usr/local/ssl/lib64/"
 ENV CPPFLAGS "-I/usr/local/ssl/include -I/usr/local/ssl/include/openssl"
-
-ARG PY_VERSION
-RUN echo "Building Python version ${PY_VERSION}"
-RUN wget -q https://www.python.org/ftp/python/${PY_VERSION%[abr]*}/Python-${PY_VERSION}.tgz -O - | tar -xz
-WORKDIR Python-${PY_VERSION}
 
 RUN if [ "${QUICK_BUILD}" = true ] ; then OPTIMIZATION="" ; else OPTIMIZATION="--enable-optimizations --with-lto"; fi && \
   ./configure \
@@ -47,7 +55,7 @@ RUN if [ "${QUICK_BUILD}" = true ] ; then OPTIMIZATION="" ; else OPTIMIZATION="-
   --disable-test-modules \
   ${OPTIMIZATION}
 RUN make --quiet
-RUN make altinstall
+RUN make --quiet altinstall
 # We make sure to remove all the fluff
 # recipe taken from the official image https://github.com/docker-library/python/
 RUN find /usr/local -depth \
