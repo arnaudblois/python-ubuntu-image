@@ -18,8 +18,14 @@ ARG OPENSSL_VERSION="3.0.3"
 ARG QUICK_BUILD="false"
 ARG PY_VERSION
 
+RUN echo "Downloading sources"
+
+# BASE_PYTHON_VERSION: we strip the alpha, beta, rc, etc. For instance 3.11.0a3 -> 3.11.0 
+RUN export BASE_PYTHON_VERSION=`echo ${PY_VERSION} | sed -r "s/([0-9]+\.[0-9]+\.[0-9]+)([a-zA-Z][0-9]+)?/\1/"` && \
+  wget -cq https://www.python.org/ftp/python/${BASE_PYTHON_VERSION}/Python-${PY_VERSION}.tgz -O - | tar -xz && \
+  wget -cq https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz -O - | tar -xz
+
 RUN echo "Building OpenSSL ${OPENSSL_VERSION}"
-RUN wget -cq https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz -O - | tar -xz
 WORKDIR /openssl-${OPENSSL_VERSION}
 # Make sure to use RPATH as specified at
 # https://wiki.openssl.org/index.php/Compilation_and_Installation#Using_RPATHs
@@ -31,9 +37,7 @@ RUN make --quiet
 # RUN if [ ! "${QUICK_BUILD}" = true ] ; then make test; fi
 RUN make --quiet install
 
-WORKDIR /
-RUN echo "Building Python version ${PY_VERSION} from source at https://www.python.org/ftp/python/${PY_VERSION}/Python-${PY_VERSION}.tgz" && \
-  wget -cq https://www.python.org/ftp/python/${PY_VERSION}/Python-${PY_VERSION}.tgz -O - | tar -xz
+RUN echo "Building Python ${PY_VERSION}"
 WORKDIR /Python-${PY_VERSION}
 # Make sure the env variable are correctly set for Python to be able
 # to link and compile against openSSL.
