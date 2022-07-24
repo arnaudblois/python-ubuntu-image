@@ -31,10 +31,7 @@ WORKDIR /openssl-${OPENSSL_VERSION}
 # https://wiki.openssl.org/index.php/Compilation_and_Installation#Using_RPATHs
 RUN ./config -Wl,-rpath=/usr/local/ssl/lib64:/usr/local/lib -Wl,--enable-new-dtags --prefix=/usr/local/ssl --openssldir=/usr/local/ssl
 RUN make --quiet
-# Disabling the following test for openssl 3.0.3 as these tests were flaky
-# and started failing after the 01/06/2022. See issue
-# https://github.com/openssl/openssl/issues/18456
-# RUN if [ ! "${QUICK_BUILD}" = true ] ; then make test; fi
+RUN if [ ! "${QUICK_BUILD}" = true ] ; then make test; fi
 RUN make --quiet install
 
 RUN echo "Building Python ${PY_VERSION}"
