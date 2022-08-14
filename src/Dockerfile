@@ -14,14 +14,14 @@ RUN apt-get install -y \
   wget \
   zlib1g-dev
 
-ARG OPENSSL_VERSION="3.0.3"
+ARG OPENSSL_VERSION="3.0.5"
 ARG QUICK_BUILD="false"
 ARG PY_VERSION
 
 RUN echo "Downloading sources"
 
-# BASE_PYTHON_VERSION: we strip the alpha, beta, rc, etc. For instance 3.11.0a3 -> 3.11.0 
-RUN export BASE_PYTHON_VERSION=`echo ${PY_VERSION} | sed -r "s/([0-9]+\.[0-9]+\.[0-9]+)([a-zA-Z][0-9]+)?/\1/"` && \
+# BASE_PYTHON_VERSION: we strip the alpha, beta, rc, etc. For instance 3.11.0rc1 -> 3.11.0 
+RUN export BASE_PYTHON_VERSION=`echo ${PY_VERSION} | sed -r "s/([0-9]+\.[0-9]+\.[0-9]+)([a-zA-Z]+[0-9]+)?/\1/"` && \
   wget -cq https://www.python.org/ftp/python/${BASE_PYTHON_VERSION}/Python-${PY_VERSION}.tgz -O - | tar -xz && \
   wget -cq https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz -O - | tar -xz
 
@@ -31,10 +31,7 @@ WORKDIR /openssl-${OPENSSL_VERSION}
 # https://wiki.openssl.org/index.php/Compilation_and_Installation#Using_RPATHs
 RUN ./config -Wl,-rpath=/usr/local/ssl/lib64:/usr/local/lib -Wl,--enable-new-dtags --prefix=/usr/local/ssl --openssldir=/usr/local/ssl
 RUN make --quiet
-# Disabling the following test for openssl 3.0.3 as these tests were flaky
-# and started failing after the 01/06/2022. See issue
-# https://github.com/openssl/openssl/issues/18456
-# RUN if [ ! "${QUICK_BUILD}" = true ] ; then make test; fi
+RUN if [ ! "${QUICK_BUILD}" = true ] ; then make test; fi
 RUN make --quiet install
 
 RUN echo "Building Python ${PY_VERSION}"
