@@ -7,7 +7,7 @@ on:
     branches: [main]
 
 env:
-  OPENSSL_VERSION: 3.0.3
+  OPENSSL_VERSION: 3.0.5
   QUICK_BUILD: true
 
 jobs:
