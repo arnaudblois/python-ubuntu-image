@@ -20,6 +20,7 @@ The images are also accessible by using the major.minor.revision tag
 `ursamajorlab/<adjective>-python:<full-python-version>`,
 e.g. ursamajorlab/focal-python:3.10.7
 
+
 # Rationale
 
 Other images are either relying on the outdated Python provided by the distro,
