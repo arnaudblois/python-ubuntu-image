@@ -7,18 +7,18 @@ and the latest openSSL.
 
 The images can be accessed using `docker pull <image name>`.
 
-| Ubuntu | Python    | Image name                       |
-| ------ | --------- | -------------------------------- |
-| 20.04  | 3.9.14    | ursamajorlab/focal-python:3.9    |
-| 20.04  | 3.10.7    | ursamajorlab/focal-python:3.10   |
-| 20.04  | 3.11.0rc2 | ursamajorlab/focal-python:3.11   |
-| 22.04  | 3.9.14    | ursamajorlab/jammy-python:3.9    |
-| 22.04  | 3.10.7    | ursamajorlab/jammy-python:3.10   |
-| 22.04  | 3.11.0rc2 | ursamajorlab/jammy-python:3.11   |
+| Ubuntu    | Python    | Image name                        |
+| --------- | --------- | --------------------------------- |
+| 22.04     | 3.10.8    | ursamajorlab/jammy-python:3.10    |
+| 22.04     | 3.11.0    | ursamajorlab/jammy-python:3.11    |
+| 22.04     | 3.12.0a1  | ursamajorlab/jammy-python:3.12    |
+| 22.10     | 3.10.8    | ursamajorlab/kinetic-python:3.10  |
+| 22.10     | 3.11.0    | ursamajorlab/kinetic-python:3.11  |
+| 22.10     | 3.12.0a1  | ursamajorlab/kinetic-python:3.12  |
 
 The images are also accessible by using the major.minor.revision tag
 `ursamajorlab/<adjective>-python:<full-python-version>`,
-e.g. ursamajorlab/focal-python:3.10.7
+e.g. ursamajorlab/kinetic-python:3.11.0
 
 
 # Rationale
