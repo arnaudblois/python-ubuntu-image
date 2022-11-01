@@ -71,7 +71,7 @@ RUN apt-get update \
     bzip2 \
     ca-certificates \
     curl \
-    libffi7 \
+    libffi8 \
     libgdbm6 \
     liblzma5 \
     libncurses6 \
