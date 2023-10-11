@@ -7,18 +7,18 @@ and the latest openSSL.
 
 The images can be accessed using `docker pull <image name>`.
 
-| Ubuntu | Python   | Image name                     |
-| ------ | -------- | ------------------------------ |
-| 22.04  | 3.10.12  | ursamajorlab/jammy-python:3.10 |
-| 22.04  | 3.11.4   | ursamajorlab/jammy-python:3.11 |
-| 22.04  | 3.12.0b3 | ursamajorlab/jammy-python:3.12 |
-| 22.10  | 3.10.12  | ursamajorlab/lunar-python:3.10 |
-| 22.10  | 3.11.4   | ursamajorlab/lunar-python:3.11 |
-| 22.10  | 3.12.0b3 | ursamajorlab/lunar-python:3.12 |
+| Ubuntu | Python  | Image name                     |
+| ------ | ------- | ------------------------------ |
+| 22.04  | 3.10.13 | ursamajorlab/jammy-python:3.10 |
+| 22.04  | 3.11.6  | ursamajorlab/jammy-python:3.11 |
+| 22.04  | 3.12.0  | ursamajorlab/jammy-python:3.12 |
+| 22.10  | 3.10.13 | ursamajorlab/lunar-python:3.10 |
+| 22.10  | 3.11.6  | ursamajorlab/lunar-python:3.11 |
+| 22.10  | 3.12.0  | ursamajorlab/lunar-python:3.12 |
 
 The images are also accessible by using the major.minor.revision tag
 `ursamajorlab/<adjective>-python:<full-python-version>`,
-e.g. ursamajorlab/kinetic-python:3.11.4
+e.g. ursamajorlab/kinetic-python:3.11.6
 
 # Rationale
 
