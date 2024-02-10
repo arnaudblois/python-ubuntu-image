@@ -14,7 +14,7 @@ RUN apt-get install -y \
   wget \
   zlib1g-dev
 
-ARG OPENSSL_VERSION="3.2.0"
+ARG OPENSSL_VERSION="3.2.1"
 ARG QUICK_BUILD="false"
 ARG PY_VERSION
 
