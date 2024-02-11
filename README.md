@@ -1,6 +1,6 @@
 # python-ubuntu-image
 
-A Ubuntu Docker image with the latest Pyth²on version built with optimisations
+A Ubuntu Docker image with the latest Python version built with optimisations
 and the latest openSSL.
 
 # Images
@@ -9,12 +9,12 @@ The images can be accessed using `docker pull <image name>`.
 
 | Ubuntu | Python   | Image name                      |
 | ------ | -------- | ------------------------------- |
-| 22.04  | 3.11.7   | ursamajorlab/jammy-python:3.11  |
-| 22.04  | 3.12.1   | ursamajorlab/jammy-python:3.12  |
-| 22.04  | 3.13.0a2 | ursamajorlab/jammy-python:3.13  |
-| 23.10  | 3.11.7   | ursamajorlab/mantic-python:3.11 |
-| 23.10  | 3.12.1   | ursamajorlab/mantic-python:3.12 |
-| 23.10  | 3.13.0a2 | ursamajorlab/mantic-python:3.13 |
+| 22.04  | 3.11.8   | ursamajorlab/jammy-python:3.11  |
+| 22.04  | 3.12.2   | ursamajorlab/jammy-python:3.12  |
+| 22.04  | 3.13.0a3 | ursamajorlab/jammy-python:3.13  |
+| 23.10  | 3.11.8   | ursamajorlab/mantic-python:3.11 |
+| 23.10  | 3.12.2   | ursamajorlab/mantic-python:3.12 |
+| 23.10  | 3.13.0a3 | ursamajorlab/mantic-python:3.13 |
 
 The images are also accessible by using the major.minor.revision tag
 `ursamajorlab/<adjective>-python:<full-python-version>`,
