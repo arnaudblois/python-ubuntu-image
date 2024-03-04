@@ -47,9 +47,7 @@ RUN if [ "${QUICK_BUILD}" = true ] ; then OPTIMIZATION="" ; else OPTIMIZATION="-
   --with-openssl=/usr/local/ssl \
   --enable-loadable-sqlite-extensions \
   --enable-shared \
-  --with-system-ffi \
   --with-openssl-rpath=auto \
-  --disable-test-modules \
   ${OPTIMIZATION}
 RUN make --quiet
 RUN make --quiet altinstall
