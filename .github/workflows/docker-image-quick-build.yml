@@ -7,7 +7,7 @@ on:
     branches: [main]
 
 env:
-  OPENSSL_VERSION: 3.2.1
+  OPENSSL_VERSION: 3.3.0
   QUICK_BUILD: true
 
 jobs:
@@ -15,8 +15,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        ubuntu_version: ["22.04", "23.10"]
-        python_version: ["3.11.8", "3.12.2", "3.13.0a4"]
+        ubuntu_version: ["22.04", "24.04"]
+        python_version: ["3.11.9", "3.12.3", "3.13.0b1"]
     env:
       UBUNTU_VERSION: ${{ matrix.ubuntu_version }}
       PYTHON_VERSION: ${{ matrix.python_version }}

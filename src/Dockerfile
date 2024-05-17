@@ -1,7 +1,10 @@
 ARG UBUNTU_VERSION
 
-FROM ubuntu:${UBUNTU_VERSION} as building_image
-RUN apt-get update && apt-get dist-upgrade -y
+FROM ubuntu:${UBUNTU_VERSION} as base_image
+RUN apt-get update && apt-get dist-upgrade -y && \
+  DEBIAN_FRONTEND=noninteractive apt-get install -y tzdata
+
+FROM base_image AS building_image
 RUN apt-get install -y \
   build-essential \
   libbz2-dev \
@@ -11,10 +14,11 @@ RUN apt-get install -y \
   libncurses5-dev \
   libnss3-dev \
   libsqlite3-dev \
+  tzdata \
   wget \
   zlib1g-dev
 
-ARG OPENSSL_VERSION="3.2.1"
+ARG OPENSSL_VERSION="3.3.0"
 ARG QUICK_BUILD="false"
 ARG PY_VERSION
 
@@ -62,10 +66,8 @@ RUN find /usr/local -depth \
 # We also remove the headers and doc for openSSL as they are no longer needed.
 RUN rm -rf /usr/local/ssl/share /usr/local/ssl/include
 
-FROM ubuntu:${UBUNTU_VERSION}
-RUN apt-get update \
-  && apt-get dist-upgrade -y \
-  && apt-get install -y --no-install-recommends \
+FROM base_image
+RUN apt-get install -y --no-install-recommends \
   bzip2 \
   ca-certificates \
   curl \
