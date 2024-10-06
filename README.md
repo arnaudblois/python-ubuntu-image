@@ -9,16 +9,16 @@ The images can be accessed using `docker pull <image name>`.
 
 | Ubuntu | Python    | Image name                     |
 | ------ | --------- | ------------------------------ |
-| 22.04  | 3.11.9    | ursamajorlab/jammy-python:3.11 |
-| 22.04  | 3.12.5    | ursamajorlab/jammy-python:3.12 |
-| 22.04  | 3.13.0rc1 | ursamajorlab/jammy-python:3.13 |
-| 24.04  | 3.11.9    | ursamajorlab/noble-python:3.11 |
-| 24.04  | 3.12.5    | ursamajorlab/noble-python:3.12 |
-| 24.04  | 3.13.0rc1 | ursamajorlab/noble-python:3.13 |
+| 22.04  | 3.11.10   | ursamajorlab/jammy-python:3.11 |
+| 22.04  | 3.12.7    | ursamajorlab/jammy-python:3.12 |
+| 22.04  | 3.13.0rc3 | ursamajorlab/jammy-python:3.13 |
+| 24.04  | 3.11.10   | ursamajorlab/noble-python:3.11 |
+| 24.04  | 3.12.7    | ursamajorlab/noble-python:3.12 |
+| 24.04  | 3.13.0rc3 | ursamajorlab/noble-python:3.13 |
 
 The images are also accessible by using the major.minor.revision tag
 `ursamajorlab/<adjective>-python:<full-python-version>`,
-e.g. ursamajorlab/noble-python:3.12.5
+e.g. ursamajorlab/noble-python:3.12.7
 
 # Rationale
 
