@@ -5,15 +5,15 @@ on:
     branches: [main]
 
 env:
-  OPENSSL_VERSION: 3.3.2
+  OPENSSL_VERSION: 3.4.0
 
 jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        ubuntu_version: ["22.04", "24.04"]
-        python_version: ["3.11.10", "3.12.7", "3.13.0rc3"]
+        ubuntu_version: ["24.04", "24.10"]
+        python_version: ["3.11.10", "3.12.7", "3.13.0"]
     env:
       UBUNTU_VERSION: ${{ matrix.ubuntu_version }}
       PYTHON_VERSION: ${{ matrix.python_version }}
