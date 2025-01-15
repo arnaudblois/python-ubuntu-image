@@ -16,7 +16,7 @@ jobs:
     strategy:
       matrix:
         ubuntu_version: ["24.04", "24.10"]
-        python_version: ["3.11.10", "3.12.7", "3.13.0"]
+        python_version: ["3.11.11", "3.12.8", "3.13.1"]
     env:
       UBUNTU_VERSION: ${{ matrix.ubuntu_version }}
       PYTHON_VERSION: ${{ matrix.python_version }}
