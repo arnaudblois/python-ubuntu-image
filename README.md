@@ -7,14 +7,14 @@ and the latest openSSL.
 
 The images can be accessed using `docker pull <image name>`.
 
-| Ubuntu | Python  | Image name                        |
-| ------ | ------- | --------------------------------- |
-| 24.04  | 3.11.11 | ursamajorlab/noble-python:3.11    |
-| 24.04  | 3.12.8  | ursamajorlab/noble-python:3.12    |
-| 24.04  | 3.13.1  | ursamajorlab/noble-python:3.13    |
-| 24.10  | 3.11.11 | ursamajorlab/oracular-python:3.11 |
-| 24.10  | 3.12.8  | ursamajorlab/oracular-python:3.12 |
-| 24.10  | 3.13.1  | ursamajorlab/oracular-python:3.13 |
+| Ubuntu | Python   | Image name                      |
+| ------ | -------- | ------------------------------- |
+| 24.04  | 3.12.11  | ursamajorlab/noble-python:3.12  |
+| 24.04  | 3.13.5   | ursamajorlab/noble-python:3.13  |
+| 24.04  | 3.14.0b2 | ursamajorlab/noble-python:3.14  |
+| 25.04  | 3.12.11  | ursamajorlab/plucky-python:3.12 |
+| 25.04  | 3.13.5   | ursamajorlab/plucky-python:3.13 |
+| 25.04  | 3.14.0b2 | ursamajorlab/plucky-python:3.14 |
 
 The images are also accessible by using the major.minor.revision tag
 `ursamajorlab/<adjective>-python:<full-python-version>`,
