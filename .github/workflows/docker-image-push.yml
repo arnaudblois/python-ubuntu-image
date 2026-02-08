@@ -5,22 +5,26 @@ on:
     branches: [main]
 
 env:
-  OPENSSL_VERSION: 3.5.0
+  OPENSSL_VERSION: 3.6.1
 
 jobs:
   build:
-    runs-on: ubuntu-latest
     strategy:
       matrix:
-        ubuntu_version: ["24.04", "25.04"]
-        python_version: ["3.12.11", "3.13.5", "3.14.0b2"]
+        ubuntu_version: ["24.04", "25.10"]
+        python_version: ["3.13.12", "3.14.3", "3.15.0a5"]
+        arch: ["amd64", "arm64"]
+    runs-on: ${{ matrix.arch == 'amd64' && 'ubuntu-latest' || 'ubuntu-24.04-arm' }}
     env:
       UBUNTU_VERSION: ${{ matrix.ubuntu_version }}
       PYTHON_VERSION: ${{ matrix.python_version }}
+      ARCH: ${{ matrix.arch }}
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
 
     steps:
       - uses: actions/checkout@v4
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
       - name: Build the Docker image
         run: bash src/build_image.sh
       - name: Test the image
@@ -32,10 +36,45 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Push the Image
         run: |
+          set -euo pipefail
           UBUNTU_ADJECTIVE=$(bash src/ubuntu_adjective.sh --ubuntu=${UBUNTU_VERSION})
-          docker push ${DOCKERHUB_USERNAME}/${UBUNTU_ADJECTIVE}-python:${PYTHON_VERSION}
-      - name: Retag to major.minor only (e.g. impish-python:3.10)
+          docker push ${DOCKERHUB_USERNAME}/${UBUNTU_ADJECTIVE}-python:${PYTHON_VERSION}-${ARCH}
+
+  create-manifest:
+    needs: build
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        ubuntu_version: ["24.04", "25.10"]
+        python_version: ["3.13.12", "3.14.3", "3.15.0a5"]
+    env:
+      UBUNTU_VERSION: ${{ matrix.ubuntu_version }}
+      PYTHON_VERSION: ${{ matrix.python_version }}
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+    steps:
+      - uses: actions/checkout@v6
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Create and Push Multi-Arch Manifest
         run: |
+          set -euo pipefail
           UBUNTU_ADJECTIVE=$(bash src/ubuntu_adjective.sh --ubuntu=${UBUNTU_VERSION})
-          docker tag ${DOCKERHUB_USERNAME}/${UBUNTU_ADJECTIVE}-python:${PYTHON_VERSION} ${DOCKERHUB_USERNAME}/${UBUNTU_ADJECTIVE}-python:${PYTHON_VERSION%.*}
-          docker push ${DOCKERHUB_USERNAME}/${UBUNTU_ADJECTIVE}-python:${PYTHON_VERSION%.*}
+          docker manifest rm ${DOCKERHUB_USERNAME}/${UBUNTU_ADJECTIVE}-python:${PYTHON_VERSION} || true
+          docker manifest create ${DOCKERHUB_USERNAME}/${UBUNTU_ADJECTIVE}-python:${PYTHON_VERSION} \
+            --amend ${DOCKERHUB_USERNAME}/${UBUNTU_ADJECTIVE}-python:${PYTHON_VERSION}-amd64 \
+            --amend ${DOCKERHUB_USERNAME}/${UBUNTU_ADJECTIVE}-python:${PYTHON_VERSION}-arm64
+          docker manifest push ${DOCKERHUB_USERNAME}/${UBUNTU_ADJECTIVE}-python:${PYTHON_VERSION}
+
+      - name: Retag and Push Major.Minor Manifest
+        run: |
+          set -euo pipefail
+          UBUNTU_ADJECTIVE=$(bash src/ubuntu_adjective.sh --ubuntu=${UBUNTU_VERSION})
+          docker manifest rm ${DOCKERHUB_USERNAME}/${UBUNTU_ADJECTIVE}-python:${PYTHON_VERSION%.*} || true
+          docker manifest create ${DOCKERHUB_USERNAME}/${UBUNTU_ADJECTIVE}-python:${PYTHON_VERSION%.*} \
+            --amend ${DOCKERHUB_USERNAME}/${UBUNTU_ADJECTIVE}-python:${PYTHON_VERSION}-amd64 \
+            --amend ${DOCKERHUB_USERNAME}/${UBUNTU_ADJECTIVE}-python:${PYTHON_VERSION}-arm64
+          docker manifest push ${DOCKERHUB_USERNAME}/${UBUNTU_ADJECTIVE}-python:${PYTHON_VERSION%.*}
