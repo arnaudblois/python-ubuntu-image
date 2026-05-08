@@ -50,6 +50,10 @@ case $UBUNTU_VERSION in
     UBUNTU_ADJECTIVE="plucky";;
   25.10)
     UBUNTU_ADJECTIVE="questing";;
+  26.04)
+    UBUNTU_ADJECTIVE="resolute";;
+  26.10)
+    UBUNTU_ADJECTIVE="stonking";;
   \?)
     echo "Error: Invalid option for ubuntu version"
     exit;;

@@ -7,17 +7,17 @@ on:
     branches: [main]
 
 env:
-  OPENSSL_VERSION: 3.6.1
+  OPENSSL_VERSION: 4.0.0
   QUICK_BUILD: true
 
 jobs:
   build:
     strategy:
       matrix:
-        ubuntu_version: ["24.04", "25.10"]
-        python_version: ["3.13.12", "3.14.3", "3.15.0a5"]
+        ubuntu_version: ["25.10", "26.04"]
+        python_version: ["3.13.13", "3.14.4", "3.15.0b1"]
         arch: ["amd64", "arm64"]
-    runs-on: ${{ matrix.arch == 'amd64' && 'ubuntu-latest' || 'ubuntu-24.04-arm' }}
+    runs-on: ${{ matrix.arch == 'amd64' && 'ubuntu-latest' || 'ubuntu-26.04-arm' }}
     env:
       UBUNTU_VERSION: ${{ matrix.ubuntu_version }}
       PYTHON_VERSION: ${{ matrix.python_version }}
