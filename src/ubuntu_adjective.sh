@@ -6,7 +6,7 @@ Help()
    echo
    echo "Syntax: ubuntu_adjective --ubuntu=[VERSION]"
    echo "options:"
-   echo "-u, --ubuntu   Ubuntu version to use for the base image, e.g. 21.04"
+   echo "-u, --ubuntu   Ubuntu version to use for the base image, e.g. 26.04"
    echo
 }
 
@@ -18,8 +18,8 @@ for i in "$@"; do
     -u=*|--ubuntu=*)
       UBUNTU_VERSION="${i#*=}";;
     *)
-      echo "Error: Invalid option"
-      exit;;
+      echo "Error: Invalid option" >&2
+      exit 1;;
   esac
 done
 
@@ -50,9 +50,13 @@ case $UBUNTU_VERSION in
     UBUNTU_ADJECTIVE="plucky";;
   25.10)
     UBUNTU_ADJECTIVE="questing";;
-  \?)
-    echo "Error: Invalid option for ubuntu version"
-    exit;;
+  26.04)
+    UBUNTU_ADJECTIVE="resolute";;
+  26.10)
+    UBUNTU_ADJECTIVE="stonking";;
+  *)
+    echo "Error: Invalid option for ubuntu version" >&2
+    exit 1;;
 esac
 
-echo ${UBUNTU_ADJECTIVE}
+echo "${UBUNTU_ADJECTIVE}"
